@@ -26,7 +26,9 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 import paho.mqtt.client as mqtt
-import os, urlparse
+import urllib.parse
+import os
+import ssl
 
 # Define event callbacks
 def on_connect(client, userdata, flags, rc):
@@ -56,9 +58,10 @@ mqttc.on_subscribe = on_subscribe
 
 # Parse CLOUDMQTT_URL (or fallback to localhost)
 url_str = os.environ.get('CLOUDMQTT_URL', 'mqtt://localhost:1883')
-url = urlparse.urlparse(url_str)
+url = urllib.parse.urlparse(url_str)
 topic = url.path[1:] or 'test'
 
+mqttc.tls_set("/etc/ssl/certs/ca-certificates.crt", tls_version=ssl.PROTOCOL_TLSv1_2)
 # Connect
 mqttc.username_pw_set(url.username, url.password)
 mqttc.connect(url.hostname, url.port)
