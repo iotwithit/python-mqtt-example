@@ -61,7 +61,7 @@ url_str = os.environ.get('CLOUDMQTT_URL', 'mqtt://localhost:1883')
 url = urllib.parse.urlparse(url_str)
 topic = url.path[1:] or 'test'
 
-mqttc.tls_set("/etc/ssl/certs/ca-certificates.crt", tls_version=ssl.PROTOCOL_TLSv1_2)
+mqttc.tls_set("certificate.crt", tls_version=ssl.PROTOCOL_TLSv1_2)
 # Connect
 mqttc.username_pw_set(url.username, url.password)
 mqttc.connect(url.hostname, url.port)
